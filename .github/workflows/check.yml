@@ -7,6 +7,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install modules
-        uses: npm
+        run: npm install
       - name: Run ESLint
         run: eslint
