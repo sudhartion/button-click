@@ -1,0 +1,12 @@
+name: Perform code checks
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install modules
+        run: npm install
+      - name: Run ESLint
+        run: ./node_modules/.bin/eslint
