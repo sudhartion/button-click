@@ -1,0 +1,20 @@
+.main-button {
+    background-color: skyblue;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    box-shadow: steelblue 1px 1px 4px;
+    color: midnightblue;
+    font-size: large;
+    font-weight: bold;
+}
+
+.main-button:hover {
+    background-color: hsl(197, 71%, 78%); /*skyblue with +5% value*/
+    box-shadow: hsl(207, 44%, 54%) 1px 1px 4px; /*steelblue with +5% value*/
+}
+
+.main-button:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
+}
