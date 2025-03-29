@@ -16,6 +16,8 @@ terraform {
   }
 }
 
+provider "aws" {}
+
 resource "aws_security_group" "button-click-security" {
   name = "button-click-security"
   description = "Security Group for Button Click infrastructure"
