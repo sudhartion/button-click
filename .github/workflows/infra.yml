@@ -1,0 +1,20 @@
+name: Configure Infrastructure
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Terraform
+        run: |
+          sudo apt-get update
+          sudo apt-get install terraform
+      - name: Generate Terraform plan
+        run: |
+          terraform plan -out plan.out
+      - name: Archive plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: ./plan.out
