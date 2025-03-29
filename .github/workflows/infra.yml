@@ -1,7 +1,7 @@
 name: Configure Infrastructure
 on: push
 jobs:
-  generate-plan:
+  terraform:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,3 +26,11 @@ jobs:
         with:
           name: terraform-plan
           path: ./plan.out
+      - name: Execute plan
+        if: github.ref_name == 'main'
+        run: |
+          terraform apply -auto-approve ./plan.out
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
