@@ -1,7 +1,7 @@
 name: Configure Infrastructure
 on: push
 jobs:
-  check:
+  generate-plan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
