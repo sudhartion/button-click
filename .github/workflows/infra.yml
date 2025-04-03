@@ -27,7 +27,7 @@ jobs:
           name: terraform-plan
           path: ./plan.out
       - name: Execute plan
-        if: github.ref_name == 'main'
+        if: github.ref_name == 'terraform-workflow'
         run: |
           terraform apply -auto-approve ./plan.out
         env:
