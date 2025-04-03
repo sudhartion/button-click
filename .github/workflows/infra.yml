@@ -28,10 +28,7 @@ jobs:
           path: ./plan.out
       - name: Execute plan
         id: execute-plan
-        if: >
-          github.ref_name == 'terraform-workflow' &&
-          ! startsWith(github.event.head_commit.message, 'Update Terraform state') &&
-          ! startsWith(github.event.head_commit.message, 'Empty commit')
+        if: github.ref_name == 'terraform-workflow'
         run: |
           terraform apply -auto-approve ./plan.out
         env:
