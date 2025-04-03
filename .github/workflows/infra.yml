@@ -28,7 +28,10 @@ jobs:
           path: ./plan.out
       - name: Execute plan
         id: execute-plan
-        if: github.ref_name == 'terraform-workflow' && ! startsWith(github.event.head_commit.message, 'Update Terraform state')
+        if: >
+          github.ref_name == 'terraform-workflow' &&
+          ! startsWith(github.event.head_commit.message, 'Update Terraform state') &&
+          ! startsWith(github.event.head_commit.message, 'Empty commit')
         run: |
           terraform apply -auto-approve ./plan.out
         env:
@@ -36,10 +39,18 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
       - name: Commit state
+        id: commit-state
         if: steps.execute-plan.conclusion == 'success'
         run: |
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
           git add ./terraform.tfstate
           git commit -m "Update Terraform state"
+          git push
+      - name: Commit empty (Temporary)
+        if: steps.commit-state.conclusion == 'skipped'
+        run: |
+          git config user.name 'Sudharshan D M (auto)'
+          git config user.email 'dmsudharshan@gmail.com'
+          git commit --allow-empty -m "Empty commit"
           git push
