@@ -15,7 +15,7 @@ jobs:
       - name: Setup SSH Agent
         run: |
           eval $(ssh-agent)
-          ssh-add <(${{ secrets.INFRA_ACCESS_KEY }})
+          ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
       - name: Run Playbook
         run: |
           ansible-playbook --inventory ./inventory.yml ./playbook.yml
