@@ -12,6 +12,13 @@ jobs:
           sudo apt install software-properties-common
           sudo add-apt-repository --yes --update ppa:ansible/ansible
           sudo apt install ansible
+      - name: Setup SSH Agent
+        run: |
+          eval $(ssh-agent)
+          ssh-add <(${{ secrets.INFRA_ACCESS_KEY }})
       - name: Run Playbook
         run: |
-          ansible-playbook ./playbook.yml
+          ansible-playbook --inventory ./inventory.yml ./playbook.yml
+      - name: Cleanup SSH Agent
+        run: |
+          pkill ssh-agent
