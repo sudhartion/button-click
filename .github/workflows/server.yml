@@ -18,6 +18,7 @@ jobs:
           ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
       - name: Run Playbook
         run: |
+          pgrep ssh-agent
           ansible-playbook --inventory ./inventory.yml ./playbook.yml
       - name: Cleanup SSH Agent
         run: |
