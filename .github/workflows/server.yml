@@ -12,14 +12,15 @@ jobs:
           sudo apt install software-properties-common
           sudo add-apt-repository --yes --update ppa:ansible/ansible
           sudo apt install ansible
-      - name: Setup SSH Agent
+      - name: Setup SSH Access
         run: |
+          cat "${{ secrets.SERVER_HOST_KEYS }}" >>~/.ssh/known_hosts
           eval $(ssh-agent)
           ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
       - name: Run Playbook
         run: |
-          pgrep ssh-agent
           ansible-playbook --inventory ./inventory.yml ./playbook.yml
-      - name: Cleanup SSH Agent
+      - name: Cleanup SSH Access
         run: |
+          ssh-keygen -R sudhartion.duckdns.org
           pkill ssh-agent
