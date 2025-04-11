@@ -1,0 +1,17 @@
+name: Configure Server
+on: push
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install software-properties-common
+          sudo add-apt-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible
+      - name: Run Playbook
+        run: |
+          ansible-playbook ./playbook.yml

@@ -1,0 +1,5 @@
+- name: Placeholder
+  tasks:
+    - name: Assert true
+      ansible.builtin.assert:
+        that: true
