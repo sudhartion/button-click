@@ -1,4 +1,5 @@
 - name: Placeholder
+  hosts: localhost
   tasks:
     - name: Assert true
       ansible.builtin.assert:
