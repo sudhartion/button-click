@@ -15,7 +15,7 @@ jobs:
       - name: Setup SSH Access
         run: |
           mkdir -p ~/.ssh/
-          cat "${{ secrets.SERVER_HOST_KEYS }}" >>~/.ssh/known_hosts
+          echo "${{ secrets.SERVER_HOST_KEYS }}" >>~/.ssh/known_hosts
           eval $(ssh-agent)
           ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
       - name: Run Playbook
