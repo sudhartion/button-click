@@ -3,6 +3,11 @@
 # AWS_SHARED_CREDENTIALS_FILE = "path/to/aws/credentials"
 # AWS_PROFILE = "profile-name" (optional for profile "default")
 
+# For CI/CD:
+# AWS_ACCESS_KEY_ID = "AcCeSsKeY"
+# AWS_SECRET_ACCESS_KEY = "sEcReTkEy"
+# AWS_DEFAULT_REGION = "region-name" (optional)
+
 terraform {
   required_providers {
     aws = {
@@ -10,6 +15,8 @@ terraform {
     }
   }
 }
+
+provider "aws" {}
 
 resource "aws_security_group" "button-click-security" {
   name = "button-click-security"

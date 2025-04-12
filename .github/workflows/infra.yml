@@ -1,0 +1,46 @@
+name: Configure Infrastructure
+on: push
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Terraform
+        run: |
+          wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install terraform
+      - name: Initialize Terraform
+        run: |
+          terraform init
+      - name: Generate Terraform plan
+        run: |
+          terraform plan -out plan.out
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: Archive plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: ./plan.out
+      - name: Execute plan
+        id: execute-plan
+        if: github.ref_name == 'terraform-workflow'
+        run: |
+          terraform apply -auto-approve ./plan.out
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: Commit state
+        id: commit-state
+        if: steps.execute-plan.conclusion == 'success'
+        run: |
+          git config user.name 'Sudharshan D M (auto)'
+          git config user.email 'dmsudharshan@gmail.com'
+          git add ./terraform.tfstate
+          git commit -m "Update Terraform state"
+          git push
