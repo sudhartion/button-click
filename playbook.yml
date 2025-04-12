@@ -1,6 +1,29 @@
-- name: Placeholder
+- name: Configure server
   hosts: button-click-server
+  become: true
   tasks:
-    - name: Assert true
-      ansible.builtin.assert:
-        that: true
+    - name: Install NGINX
+      ansible.builtin.dnf:
+        name: nginx
+        state: latest
+    - name: Create site directory
+      ansible.builtin.file:
+        path: /usr/share/www/
+        state: directory
+    - name: Copy site files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/usr/share/www/{{ item }}"
+      loop:
+        - index.html
+        - style.css
+        - script.js
+    - name: Copy site config
+      ansible.builtin.copy:
+        src: button-click.conf
+        dest: /etc/nginx/conf.d/button-click.conf
+    - name: Run NGINX
+      ansible.builtin.systemd_service:
+        name: nginx
+        state: reloaded
+        enabled: true
