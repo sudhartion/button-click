@@ -1,5 +1,8 @@
 name: Configure Server
-on: push
+on:
+  workflow_run:
+    workflows: [Configure Infrastructure]
+    types: [completed]
 jobs:
   ansible:
     runs-on: ubuntu-latest
