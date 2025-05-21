@@ -72,3 +72,8 @@ resource "aws_instance" "button-click-server" {
   vpc_security_group_ids = [aws_security_group.button-click-security.id]
   availability_zone = "eu-north-1b"
 }
+
+resource "aws_ec2_instance_state" "button-click-server-state" {
+  instance_id = aws_instance.button-click-server.id
+  state = "running"
+}
