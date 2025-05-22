@@ -63,7 +63,7 @@ jobs:
         id: setup-ssh-access
         run: |
           # mkdir -p ~/.ssh/
-          # echo "${{ secrets.SERVER_HOST_KEYS }}" >>~/.ssh/known_hosts
+          # echo "\${{ secrets.SERVER_HOST_KEYS }}" >>~/.ssh/known_hosts
           eval $(ssh-agent)
           echo "ssh_auth_sock=${SSH_AUTH_SOCK}" >>"${GITHUB_OUTPUT}"
           echo "ssh_agent_pid=${SSH_AGENT_PID}" >>"${GITHUB_OUTPUT}"
