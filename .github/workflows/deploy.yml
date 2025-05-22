@@ -1,5 +1,4 @@
 name: Deploy Project
-on: push
 jobs:
   configure-infrastructure:
     runs-on: ubuntu-latest
@@ -45,7 +44,7 @@ jobs:
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
           git add ./terraform.tfstate
-          git commit -m "Update Terraform state"
+          [[ -n $(git diff --staged --name-only) ]] && git commit -m "Update Terraform state"
           git push
   configure-server:
     needs: configure-infrastructure
