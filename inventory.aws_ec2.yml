@@ -1,0 +1,11 @@
+plugin: amazon.aws.aws_ec2
+hostnames:
+  - button-click-server
+regions:
+  - "{{ lookup('env', 'AWS_REGION') or 'us-west-1' }}"
+filters:
+  instance-id: "{{ lookup('env', 'EC2_INSTANCE_ID') }}"
+compose:
+  ansible_host: public_ip_address
+  ansible_user: '"ec2-user"'
+  ansible_python_interpreter: '"/usr/bin/python3.9"'
