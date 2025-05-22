@@ -59,7 +59,7 @@ jobs:
           # sudo apt install software-properties-common
           # sudo add-apt-repository --yes --update ppa:ansible/ansible
           sudo apt install pipx
-          sudo pipx install ansible
+          sudo pipx install --include-deps ansible
           sudo pipx inject ansible boto3
       - name: Setup SSH Access
         id: setup-ssh-access
