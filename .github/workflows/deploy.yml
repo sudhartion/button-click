@@ -1,4 +1,5 @@
 name: Deploy Project
+on: push
 jobs:
   configure-infrastructure:
     runs-on: ubuntu-latest
