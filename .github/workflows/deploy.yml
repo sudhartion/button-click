@@ -70,6 +70,9 @@ jobs:
           echo "ssh_auth_sock=${SSH_AUTH_SOCK}" >>"${GITHUB_OUTPUT}"
           echo "ssh_agent_pid=${SSH_AGENT_PID}" >>"${GITHUB_OUTPUT}"
           ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
+      - name: Create DNS token script
+        run: |
+          .github/create-dns-token-script.sh .github/set-dns-token.sh
       - name: Run Playbook
         env:
           SSH_AUTH_SOCK: "${{ steps.setup-ssh-access.outputs.ssh_auth_sock }}"
@@ -80,6 +83,9 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
           ansible-playbook --inventory ./inventory.aws_ec2.yml ./playbook.yml
+      - name: Cleanup DNS token script
+        run: |
+          rm .github/set-dns-token.sh
       - name: Cleanup SSH Access
         env:
           SSH_AGENT_PID: "${{ steps.setup-ssh-access.outputs.ssh_agent_pid }}"
