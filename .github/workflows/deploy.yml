@@ -71,6 +71,8 @@ jobs:
           echo "ssh_agent_pid=${SSH_AGENT_PID}" >>"${GITHUB_OUTPUT}"
           ssh-add <(echo "${{ secrets.INFRA_ACCESS_KEY }}")
       - name: Create DNS token script
+        env:
+          DUCKDNS_TOKEN: "${{ secrets.DUCKDNS_TOKEN }}"
         run: |
           .github/create-dns-token-script.sh .github/set-dns-token.sh
       - name: Run Playbook
