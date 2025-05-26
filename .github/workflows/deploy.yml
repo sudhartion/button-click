@@ -42,7 +42,6 @@ jobs:
         id: commit-state
         if: steps.execute-plan.conclusion == 'success'
         run: |
-          git pull
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
           git add ./terraform.tfstate
