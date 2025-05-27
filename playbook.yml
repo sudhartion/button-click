@@ -23,6 +23,7 @@
         src: button-click.conf
         dest: /etc/nginx/conf.d/button-click.conf
     - name: Copy certificate files
+      ansible.builtin.copy:
         src: ".github/{{ item }}"
         dest: "/root/{{ item }}"
         mode: preserve
