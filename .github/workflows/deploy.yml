@@ -75,6 +75,11 @@ jobs:
           DUCKDNS_TOKEN: "${{ secrets.DUCKDNS_TOKEN }}"
         run: |
           .github/create-dns-token-script.sh .github/set-dns-token.sh
+      - name: Create certificate key file
+        env:
+          SERVER_CERT_KEY: "${{ secrets.SERVER_CERT_KEY }}"
+        run: |
+          .github/create-cert-key-file.sh .github/cert-key
       - name: Run Playbook
         env:
           SSH_AUTH_SOCK: "${{ steps.setup-ssh-access.outputs.ssh_auth_sock }}"
@@ -85,9 +90,9 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
           ansible-playbook --inventory ./inventory.aws_ec2.yml ./playbook.yml
-      - name: Cleanup DNS token script
+      - name: Cleanup created files
         run: |
-          rm .github/set-dns-token.sh
+          rm .github/set-dns-token.sh .github/privkey.pem
       - name: Cleanup SSH Access
         env:
           SSH_AGENT_PID: "${{ steps.setup-ssh-access.outputs.ssh_agent_pid }}"
