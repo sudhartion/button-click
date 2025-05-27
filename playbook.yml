@@ -30,6 +30,12 @@
       loop:
         - cert-chain
         - cert-key
+    - name: Set SELinux context for certificate files
+      ansible.builtin.command:
+        cmd: "chcon --verbose --type httpd_config_t /root/{{ item }}"
+      loop:
+        - cert-chain
+        - cert-key
     - name: Run NGINX
       ansible.builtin.systemd_service:
         name: nginx
