@@ -92,7 +92,7 @@ jobs:
           ansible-playbook --inventory ./inventory.aws_ec2.yml ./playbook.yml
       - name: Cleanup created files
         run: |
-          rm .github/set-dns-token.sh .github/privkey.pem
+          rm .github/set-dns-token.sh .github/cert-key
       - name: Cleanup SSH Access
         env:
           SSH_AGENT_PID: "${{ steps.setup-ssh-access.outputs.ssh_agent_pid }}"
