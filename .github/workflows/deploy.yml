@@ -47,12 +47,10 @@ jobs:
       - name: Commit Terraform state
         id: commit-state
         if: steps.execute-plan.conclusion == 'success'
+        working-directory: terraform-state/
         run: |
-          cd terraform-state/
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
-          git config --unset http.https://github.com/.extraheader
-          git config -l --name-only
           git add ./terraform.tfstate
           [[ -n $(git diff --staged --name-only) ]] && git commit -m "Update Terraform state"
           git push
