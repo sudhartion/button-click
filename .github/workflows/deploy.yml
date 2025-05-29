@@ -50,7 +50,7 @@ jobs:
           cd terraform-state/
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
-          git config remote.origin.url "https://sudhartion:${{ secrets.GITHUB_TOKEN }}@github.com/sudhartion/button-click-tfstate.git"
+          git config remote.origin.url "https://sudhartion:${{ secrets.TFSTATE_REPO_TOKEN }}@github.com/sudhartion/button-click-tfstate.git"
           git config --unset http.https://github.com/.extraheader
           git config -l --name-only
           git add ./terraform.tfstate
