@@ -6,13 +6,18 @@ jobs:
     outputs:
       ec2_instance_id: ${{ steps.execute-plan.outputs.ec2_instance_id }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Terraform
         run: |
           wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo apt update && sudo apt install terraform jq
+      - name: Checkout Terraform state
+        uses: actions/checkout@v4
+        with:
+          repository: sudhartion/button-click-tfstate
+          path: terraform-state/
       - name: Initialize Terraform
         run: |
           terraform init
@@ -32,16 +37,17 @@ jobs:
         id: execute-plan
         if: github.ref_name == 'aws-migrate'
         run: |
-          terraform apply -auto-approve ./plan.out
+          terraform apply -auto-approve -backup=- ./plan.out
           echo "ec2_instance_id=$(.github/get-id.sh)" >>"${GITHUB_OUTPUT}"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-      - name: Commit state
+      - name: Commit Terraform state
         id: commit-state
         if: steps.execute-plan.conclusion == 'success'
         run: |
+          cd terraform-state/
           git config user.name 'Sudharshan D M (auto)'
           git config user.email 'dmsudharshan@gmail.com'
           git add ./terraform.tfstate

@@ -9,6 +9,9 @@
 # AWS_DEFAULT_REGION = "region-name" (optional)
 
 terraform {
+  backend "local" {
+    path = "terraform-state/terraform.tfstate"
+  }
   required_providers {
     aws = {
       source = "hashicorp/aws"
