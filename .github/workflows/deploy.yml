@@ -1,5 +1,7 @@
 name: Deploy Project
-on: push
+on:
+  push:
+    branches: ["main"]
 jobs:
   configure-infrastructure:
     runs-on: ubuntu-latest
@@ -36,7 +38,6 @@ jobs:
           path: ./plan.out
       - name: Execute plan
         id: execute-plan
-        if: github.ref_name == 'main'
         run: |
           terraform apply -auto-approve -backup=- ./plan.out
           echo "ec2_instance_id=$(.github/get-id.sh)" >>"${GITHUB_OUTPUT}"
