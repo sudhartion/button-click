@@ -14,7 +14,7 @@ jobs:
       - name: Run Terraform format check
         run: terraform fmt -check
       - name: Run YAMLLint
-        run: yamllint --strict .
+        run: yamllint --format github --strict .
       - name: Install NPM modules
         run: npm install
       - name: Run ESLint
