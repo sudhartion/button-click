@@ -16,7 +16,7 @@ jobs:
       - name: Install Terraform
         run: |
           .github/setup-hashicorp-apt-repo.sh
-          sudo apt install terraform jq
+          sudo apt install terraform
       - name: Checkout Terraform state
         uses: actions/checkout@v4
         with:
