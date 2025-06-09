@@ -6,7 +6,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install modules
+      - name: Install Terraform
+        run: |
+          .github/setup-hashicorp-apt-repo.sh
+          sudo apt-get install terraform
+      - name: Run Terraform format check
+        run: terraform fmt -check
+      - name: Install NPM modules
         run: npm install
       - name: Run ESLint
         run: ./node_modules/.bin/eslint
