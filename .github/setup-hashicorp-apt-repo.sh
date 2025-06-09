@@ -13,4 +13,4 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=${keyring_path}]" \
   "${source_url} $(lsb_release -cs) main" | sudo tee "${source_path}"
 
 # Update with repository
-sudo apt update
+sudo apt-get update
