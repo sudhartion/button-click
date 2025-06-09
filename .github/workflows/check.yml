@@ -12,6 +12,8 @@ jobs:
           sudo apt-get install terraform
       - name: Run Terraform format check
         run: terraform fmt -check
+      - name: Run YAMLLint
+        run: yamllint --strict .
       - name: Install NPM modules
         run: npm install
       - name: Run ESLint
