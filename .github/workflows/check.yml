@@ -7,12 +7,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install Terraform
+      - name: Install Terraform and ShellCheck
         run: |
           .github/setup-hashicorp-apt-repo.sh
-          sudo apt-get install terraform
+          sudo apt-get install terraform shellcheck
       - name: Run Terraform format check
         run: terraform fmt -check
+      - name: Install shfmt
+        run: curl --show-error --silent https://webi.sh/shfmt | sh
+      - name: Run ShellCheck
+        run: shfmt --find . | xargs shellcheck
       - name: Run YAMLLint
         run: yamllint --format github --strict .
       - name: Install NPM modules
