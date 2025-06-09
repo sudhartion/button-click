@@ -1,3 +1,4 @@
+---
 name: Perform code checks
 on: push
 jobs:

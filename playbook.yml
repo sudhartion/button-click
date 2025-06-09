@@ -1,3 +1,4 @@
+---
 - name: Configure web server
   hosts: button-click-server
   become: true
