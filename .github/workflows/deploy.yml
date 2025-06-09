@@ -1,6 +1,6 @@
 ---
 name: Deploy Project
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches: ["main"]
 concurrency:
