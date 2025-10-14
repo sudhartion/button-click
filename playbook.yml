@@ -7,6 +7,7 @@
       ansible.builtin.copy:
         src: build/button-click
         dest: /root/
+        mode: preserve
     - name: Copy systemd service file
       ansible.builtin.copy:
         src: button-click.service
