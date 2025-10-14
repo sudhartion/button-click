@@ -1,2 +1,13 @@
-let mainbutton = document.getElementsByClassName("main-button")[0];
-mainbutton.onclick = function() { console.log("Button clicked!"); };
+(async () => {
+	let mainButton = document.getElementsByClassName("main-button")[0];
+	mainButton.addEventListener("mousedown", async (e) => {
+		// "mousedown" is more precisely triggered from UI than "click"
+		await fetch("/click/register", {
+			method: "POST",
+			body: JSON.stringify({
+				offsetX: e.offsetX,
+				offsetY: e.offsetY
+			})
+		});
+	});
+})();
