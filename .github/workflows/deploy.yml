@@ -2,7 +2,7 @@
 name: Deploy Project
 on:  # yamllint disable-line rule:truthy
   push:
-    branches: ["main"]
+    branches: ["main", "playbook-systemd-fix"]
 concurrency:
   group: deploy
   cancel-in-progress: false
