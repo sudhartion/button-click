@@ -21,7 +21,7 @@
     - name: Run application server
       ansible.builtin.systemd_service:
         name: button-click
-        state: reloaded
+        state: restarted
         enabled: true
 
 - name: Configure web server
