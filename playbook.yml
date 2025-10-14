@@ -15,6 +15,9 @@
     - name: Reload systemd units
       ansible.builtin.command:
         cmd: systemctl daemon-reload
+    - name: Set SELinux context for executable file
+      ansible.builtin.command:
+        cmd: chcon --verbose --type bin_t /root/button-click
     - name: Run application server
       ansible.builtin.systemd_service:
         name: button-click
@@ -55,6 +58,9 @@
       loop:
         - cert-chain
         - cert-key
+    - name: Set SELinux boolean for web modules to connect
+      ansible.builtin.command:
+        cmd: setsebool -P httpd_can_network_connect true
     - name: Run NGINX
       ansible.builtin.systemd_service:
         name: nginx
