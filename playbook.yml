@@ -1,4 +1,25 @@
 ---
+- name: Configure application server
+  hosts: button-click-server
+  become: true
+  tasks:
+    - name: Copy application server executable
+      ansible.builtin.copy:
+        src: build/button-click
+        dest: /root/
+    - name: Copy systemd service file
+      ansible.builtin.copy:
+        src: button-click.service
+        dest: /etc/systemd/system/
+    - name: Reload systemd units
+      ansible.builtin.command:
+        cmd: systemctl daemon-reload
+    - name: Run application server
+      ansible.builtin.systemd_service:
+        name: button-click
+        state: reloaded
+        enabled: true
+
 - name: Configure web server
   hosts: button-click-server
   become: true
@@ -15,7 +36,7 @@
       ansible.builtin.copy:
         src: web/
         dest: /usr/share/www
-    - name: Copy site config
+    - name: Copy web server config
       ansible.builtin.copy:
         src: button-click.conf
         dest: /etc/nginx/conf.d/button-click.conf
