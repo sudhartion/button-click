@@ -13,12 +13,8 @@
         state: directory
     - name: Copy site files
       ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: "/usr/share/www/{{ item }}"
-      loop:
-        - index.html
-        - style.css
-        - script.js
+        src: web/
+        dest: /usr/share/www
     - name: Copy site config
       ansible.builtin.copy:
         src: button-click.conf
