@@ -1,4 +1,29 @@
 ---
+- name: Configure application server
+  hosts: button-click-server
+  become: true
+  tasks:
+    - name: Copy application server executable
+      ansible.builtin.copy:
+        src: build/button-click
+        dest: /root/
+        mode: preserve
+    - name: Copy systemd service file
+      ansible.builtin.copy:
+        src: button-click.service
+        dest: /etc/systemd/system/
+    - name: Reload systemd units
+      ansible.builtin.command:
+        cmd: systemctl daemon-reload
+    - name: Set SELinux context for executable file
+      ansible.builtin.command:
+        cmd: chcon --verbose --type bin_t /root/button-click
+    - name: Run application server
+      ansible.builtin.systemd_service:
+        name: button-click
+        state: reloaded
+        enabled: true
+
 - name: Configure web server
   hosts: button-click-server
   become: true
@@ -13,13 +38,9 @@
         state: directory
     - name: Copy site files
       ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: "/usr/share/www/{{ item }}"
-      loop:
-        - index.html
-        - style.css
-        - script.js
-    - name: Copy site config
+        src: web/
+        dest: /usr/share/www
+    - name: Copy web server config
       ansible.builtin.copy:
         src: button-click.conf
         dest: /etc/nginx/conf.d/button-click.conf
@@ -37,6 +58,9 @@
       loop:
         - cert-chain
         - cert-key
+    - name: Set SELinux boolean for web modules to connect
+      ansible.builtin.command:
+        cmd: setsebool -P httpd_can_network_connect true
     - name: Run NGINX
       ansible.builtin.systemd_service:
         name: nginx
